@@ -12,6 +12,7 @@ if (WEBGL.isWebGLAvailable()) {
     0.1,
     1000
   )
+  camera.position.z = 3
 
   // 캔버스
   // const canvas = document.querySelector('#canvas')
@@ -20,13 +21,21 @@ if (WEBGL.isWebGLAvailable()) {
   const renderer = new THREE.WebGLRenderer()
   renderer.setSize(window.innerWidth, window.innerHeight)
 
+  // 메쉬
+  const geomatry = new THREE.BoxGeometry(1, 1, 1)
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x999999,
+  })
+  const cube = new THREE.Mesh(geomatry, material)
+  scene.add(cube)
+
   document.body.appendChild(renderer.domElement)
 
   function render(time) {
     time *= 0.001 // convert time to seconds
 
-    // cube.rotation.x = time
-    // cube.rotation.y = time
+    cube.rotation.x = time
+    cube.rotation.y = time
 
     renderer.render(scene, camera)
 
