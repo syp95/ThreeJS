@@ -4,7 +4,7 @@ import { WEBGL } from './webgl'
 if (WEBGL.isWebGLAvailable()) {
   //장면
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x004fff)
+  scene.background = new THREE.Color(0xffffff)
   // 카메라
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -24,9 +24,14 @@ if (WEBGL.isWebGLAvailable()) {
   })
   renderer.setSize(window.innerWidth, window.innerHeight)
 
+  // 빛
+  const pointLight = new THREE.PointLight(0xffffff, 1)
+  pointLight.position.set(0, 2, 12)
+  scene.add(pointLight)
+
   // 메쉬
   const geomatry01 = new THREE.BoxGeometry(0.5, 0.5, 0.5)
-  const material01 = new THREE.MeshStandardMaterial({
+  const material01 = new THREE.MeshBasicMaterial({
     color: 0x999999,
   })
   const obj01 = new THREE.Mesh(geomatry01, material01)
@@ -35,13 +40,18 @@ if (WEBGL.isWebGLAvailable()) {
 
   const geomatry02 = new THREE.ConeGeometry(0.4, 0.7, 5)
   const material02 = new THREE.MeshStandardMaterial({
-    color: 0x999999,
+    color: 0xff7f00,
+    metalness: 0.9,
+    roughness: 0.5,
+
+    transparent: true,
+    opacity: 0.5,
   })
   const obj02 = new THREE.Mesh(geomatry02, material02)
   scene.add(obj02)
 
   const geomatry03 = new THREE.IcosahedronGeometry(0.4, 0)
-  const material03 = new THREE.MeshStandardMaterial({
+  const material03 = new THREE.MeshLambertMaterial({
     color: 0x999999,
   })
   const obj03 = new THREE.Mesh(geomatry03, material03)
@@ -73,6 +83,6 @@ if (WEBGL.isWebGLAvailable()) {
   }
   window.addEventListener('resize', onWindowResize)
 } else {
-  var warning = WEBGL.getWebGLErrorMessage()
+  let warning = WEBGL.getWebGLErrorMessage()
   document.body.appendChild(warning)
 }
