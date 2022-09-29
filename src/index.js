@@ -18,30 +18,60 @@ if (WEBGL.isWebGLAvailable()) {
   // const canvas = document.querySelector('#canvas')
 
   // 렌더러
-  const renderer = new THREE.WebGLRenderer()
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+  })
   renderer.setSize(window.innerWidth, window.innerHeight)
 
   // 메쉬
-  const geomatry = new THREE.BoxGeometry(1, 1, 1)
-  const material = new THREE.MeshStandardMaterial({
+  const geomatry01 = new THREE.BoxGeometry(0.5, 0.5, 0.5)
+  const material01 = new THREE.MeshStandardMaterial({
     color: 0x999999,
   })
-  const cube = new THREE.Mesh(geomatry, material)
-  scene.add(cube)
+  const obj01 = new THREE.Mesh(geomatry01, material01)
+  obj01.position.x = -1
+  scene.add(obj01)
+
+  const geomatry02 = new THREE.ConeGeometry(0.4, 0.7, 5)
+  const material02 = new THREE.MeshStandardMaterial({
+    color: 0x999999,
+  })
+  const obj02 = new THREE.Mesh(geomatry02, material02)
+  scene.add(obj02)
+
+  const geomatry03 = new THREE.IcosahedronGeometry(0.4, 0)
+  const material03 = new THREE.MeshStandardMaterial({
+    color: 0x999999,
+  })
+  const obj03 = new THREE.Mesh(geomatry03, material03)
+  scene.add(obj03)
+  obj03.position.x = 1
 
   document.body.appendChild(renderer.domElement)
 
   function render(time) {
-    time *= 0.001 // convert time to seconds
+    time *= 0.0005 // convert time to seconds
 
-    cube.rotation.x = time
-    cube.rotation.y = time
+    obj01.rotation.y = time
 
+    obj02.rotation.y = time
+
+    obj03.rotation.y = time
     renderer.render(scene, camera)
 
     requestAnimationFrame(render)
   }
   requestAnimationFrame(render)
+
+  // 반응형
+
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+  }
+  window.addEventListener('resize', onWindowResize)
 } else {
   var warning = WEBGL.getWebGLErrorMessage()
   document.body.appendChild(warning)
