@@ -5,15 +5,17 @@ if (WEBGL.isWebGLAvailable()) {
   //장면
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0xffffff)
-  // 카메라
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  )
-  camera.position.z = 3
 
+  // 카메라
+  const fov = 60
+  const aspect = window.innerWidth / window.innerHeight
+  const near = 0.1
+  const far = 1000
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+  camera.position.x = 2
+  camera.position.y = 5
+  camera.position.z = 3
+  camera.lookAt(new THREE.Vector3(0, 0, 0))
   // 캔버스
   // const canvas = document.querySelector('#canvas')
 
@@ -28,6 +30,32 @@ if (WEBGL.isWebGLAvailable()) {
   const pointLight = new THREE.PointLight(0xffffff, 1)
   pointLight.position.set(0, 2, 12)
   scene.add(pointLight)
+
+  const ambientLight = new THREE.AmbientLight(0xffa500, 0.1)
+  // scene.add(ambientLight)
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+  directionalLight.position.set(-1, 1, 1)
+  const dlHelper = new THREE.DirectionalLightHelper(
+    directionalLight,
+    0.2,
+    0x0000ff
+  )
+  scene.add(dlHelper)
+  scene.add(directionalLight)
+
+  const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
+  scene.add(hemisphereLight)
+
+  // 바닥 추가
+  const planeGeometry = new THREE.PlaneGeometry(20, 20, 1, 1)
+  const planeMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+  })
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial)
+  plane.rotation.x = -0.5 * Math.PI
+  plane.position.y = -0.2
+  scene.add(plane)
 
   // 재질
   const textureLoader = new THREE.TextureLoader()
