@@ -29,10 +29,30 @@ if (WEBGL.isWebGLAvailable()) {
   pointLight.position.set(0, 2, 12)
   scene.add(pointLight)
 
+  // 재질
+  const textureLoader = new THREE.TextureLoader()
+  const textureBaseColor = textureLoader.load(
+    '../static/images/Stone_Path_008_basecolor.jpg'
+  )
+  const textureNormal = textureLoader.load(
+    '../static/images/Stone_Path_008_normal.jpg'
+  )
+  const textureHeight = textureLoader.load(
+    '../static/images/Stone_Path_008_height.png'
+  )
+  const textureRoughness = textureLoader.load(
+    '../static/images/Stone_Path_008_roughness.jpg'
+  )
   // 메쉬
   const geomatry01 = new THREE.BoxGeometry(0.5, 0.5, 0.5)
-  const material01 = new THREE.MeshBasicMaterial({
-    color: 0x999999,
+  const material01 = new THREE.MeshStandardMaterial({
+    // color: 0x999999,
+    map: textureBaseColor,
+    normalMap: textureNormal,
+    displacementMap: textureHeight,
+    displacementScale: 0.03,
+    roughnessMap: textureRoughness,
+    roughness: 0.5,
   })
   const obj01 = new THREE.Mesh(geomatry01, material01)
   obj01.position.x = -1
@@ -51,8 +71,13 @@ if (WEBGL.isWebGLAvailable()) {
   scene.add(obj02)
 
   const geomatry03 = new THREE.IcosahedronGeometry(0.4, 0)
-  const material03 = new THREE.MeshLambertMaterial({
-    color: 0x999999,
+  const material03 = new THREE.MeshStandardMaterial({
+    map: textureBaseColor,
+    normalMap: textureNormal,
+    displacementMap: textureHeight,
+    displacementScale: 0.03,
+    roughnessMap: textureRoughness,
+    roughness: 0.8,
   })
   const obj03 = new THREE.Mesh(geomatry03, material03)
   scene.add(obj03)
